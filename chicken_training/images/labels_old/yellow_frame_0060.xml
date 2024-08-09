@@ -1,0 +1,26 @@
+<annotation>
+	<folder>output_frames</folder>
+	<filename>yellow_frame_0060.png</filename>
+	<path>C:\Data\Projects\tianJian\chicken_training\images\output_frames\yellow_frame_0060.png</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>720</width>
+		<height>1280</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>yellow chicken</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>289</xmin>
+			<ymin>596</ymin>
+			<xmax>466</xmax>
+			<ymax>745</ymax>
+		</bndbox>
+	</object>
+</annotation>

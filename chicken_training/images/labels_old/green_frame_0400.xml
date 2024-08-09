@@ -1,0 +1,26 @@
+<annotation>
+	<folder>output_frames</folder>
+	<filename>green_frame_0400.png</filename>
+	<path>C:\Data\Projects\tianJian\chicken_training\images\output_frames\green_frame_0400.png</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>720</width>
+		<height>1280</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>green chicken</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>394</xmin>
+			<ymin>633</ymin>
+			<xmax>600</xmax>
+			<ymax>944</ymax>
+		</bndbox>
+	</object>
+</annotation>

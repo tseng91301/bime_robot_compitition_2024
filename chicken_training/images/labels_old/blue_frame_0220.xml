@@ -1,0 +1,26 @@
+<annotation>
+	<folder>output_frames</folder>
+	<filename>blue_frame_0220.png</filename>
+	<path>C:\Data\Projects\tianJian\chicken_training\images\output_frames\blue_frame_0220.png</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>720</width>
+		<height>1280</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>blue chicken</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>290</xmin>
+			<ymin>385</ymin>
+			<xmax>489</xmax>
+			<ymax>633</ymax>
+		</bndbox>
+	</object>
+</annotation>
