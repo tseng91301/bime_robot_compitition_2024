@@ -5,4 +5,4 @@ print("connected")
 
 while True:
     print(comm.read_ult())
-    time.sleep(0.5)
+    time.sleep(0.01)
