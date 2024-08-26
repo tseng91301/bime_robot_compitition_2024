@@ -10,8 +10,8 @@ ports_config_path = os.path.join(package_dir, "ports.json")
 with open(ports_config_path, 'r') as f:
     ports_config = json.loads(f.read())
 
-ser_ults
-ser_motor
+ser_ults: serial.Serial
+ser_motor: serial.Serial
 def connect():
     global ser_motor
     global ser_ults
@@ -26,6 +26,21 @@ def connect():
     except Exception as e:
         u_p = ports_config['ults']['port']
         print(f"Warning: Cannot connect to ser_motor ({u_p}), {str(e)}")
+
+def send(ser: serial.Serial, inp_str):
+    ser.write(bytes(inp_str))
+    return
+
+def wait_readln(ser: serial.Serial):
+    while True:
+        if ser.in_waiting > 0:
+            line = ser.readline().decode('utf-8').rstrip()
+            return str(line)
+
+def read_ult():
+    send(ser_ults, "u")
+    return int(wait_readln())
+
 
 
 # 等待Arduino重启
