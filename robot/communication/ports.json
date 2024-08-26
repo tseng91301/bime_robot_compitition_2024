@@ -1,0 +1,8 @@
+{
+    "motor": {
+        "port": "COM20"
+    },
+    "ults": {
+        "port": "COM20"
+    }
+}
