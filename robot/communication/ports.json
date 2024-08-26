@@ -1,6 +1,6 @@
 {
     "motor": {
-        "port": "COM20"
+        "port": "COM23"
     },
     "ults": {
         "port": "COM20"
