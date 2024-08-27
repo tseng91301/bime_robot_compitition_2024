@@ -50,6 +50,6 @@ def wait_readln(ser: serial.Serial):
             line = ser.readline().decode('utf-8').rstrip()
             return str(line)
 
-def read_ult():
-    send(ser_ults, "u")
+def read_ult(dev_num: int):
+    send(ser_ults, f"u {dev_num}")
     return float(wait_readln(ser_ults))

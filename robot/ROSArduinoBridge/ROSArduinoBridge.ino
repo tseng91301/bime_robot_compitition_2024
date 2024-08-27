@@ -44,6 +44,16 @@
 
 #include "ultrasonic_ckk.h"
 
+#define ULTRASONIC_SENSOR_NUM 1
+const int ULTRASONIC_SENSOR_PINS[6][2] = { // This will be changed to [ULTRASONIC_SENSOR_NUM][2] after complete building
+  {12, 13},
+  {22, 23},
+  {24, 25},
+  {26, 27},
+  {28, 29},
+  {30, 31}
+};
+
 /* Variable initialization */
 
 // A pair of variables to help parse serial commands
@@ -65,7 +75,7 @@ long arg1;
 long arg2;
 
 // the object of ultrasonic_ckk
-Ults ultra_sonic_l1(12, 13);
+Ults ultra_sonic_arr[ULTRASONIC_SENSOR_NUM];
 
 /* Clear the current command parameters */
 void resetCommand() {
@@ -108,7 +118,7 @@ int runCommand() {
     Serial.println("OK");
     break;
   case ULTRA_SONIC_VALUE:
-    Serial.println(ultra_sonic_l1.get_val());
+    Serial.println(ultra_sonic_arr[arg2].get_val());
     // Serial.println(" ");
     // Serial.print(ultra_sonic_l2.get_val());
     // Serial.print(" ");
@@ -143,6 +153,12 @@ int runCommand() {
   default:
     Serial.println("Invalid Command");
     break;
+  }
+}
+
+void init_ults(){
+  for(int a=0; a<ULTRASONIC_SENSOR_NUM; a++){
+    ultra_sonic_arr[a].init(ULTRASONIC_SENSOR_PINS[a][0], ULTRASONIC_SENSOR_PINS[a][1]);
   }
 }
 

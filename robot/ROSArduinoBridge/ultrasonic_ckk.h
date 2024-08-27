@@ -8,11 +8,15 @@ class Ults{
         int adapt_num=10;
         double value=0.0;
     public:
-        Ults(const int tr,const int ec){
+        Ults(){}
+        void init(const int tr,const int ec){
             triggerPin=tr;
             echoPin=ec;
             pinMode(triggerPin,OUTPUT);
             pinMode(echoPin,INPUT);
+        }
+        Ults(const int tr,const int ec){
+            init(tr, ec);
         }
         void set_adapt_num(int num){
             adapt_num=num;
@@ -24,18 +28,15 @@ class Ults{
             unsigned long duration=0;
             for(int a=0;a<adapt_num;a++){
                 // 產生一個10微秒的脈衝以觸發超聲波模塊
-                unsigned long start_time = millis();
                 digitalWrite(triggerPin, LOW);
                 delayMicroseconds(2);
                 digitalWrite(triggerPin, HIGH);
                 delayMicroseconds(10);
                 digitalWrite(triggerPin, LOW);
-                unsigned long messured_num = pulseIn(echoPin, HIGH);
-                unsigned long end_time = millis();
-                if(end_time - start_time >= valid_time){
-                  messured_num = 2060;
+                unsigned long messured_num = pulseIn(echoPin, HIGH, 20000);
+                if(messured_num == 0){
+                  messured_num = 5000;
                 }
-                // Serial.println(messured_num);
                 duration += messured_num;
                 delay(1);
             }
