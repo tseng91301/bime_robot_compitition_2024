@@ -33,9 +33,9 @@ class Ults{
                 digitalWrite(triggerPin, HIGH);
                 delayMicroseconds(10);
                 digitalWrite(triggerPin, LOW);
-                unsigned long messured_num = pulseIn(echoPin, HIGH, 20000);
+                unsigned long messured_num = pulseIn(echoPin, HIGH, 15000);
                 if(messured_num == 0){
-                  messured_num = 5000;
+                  messured_num = 15000;
                 }
                 duration += messured_num;
                 delay(1);

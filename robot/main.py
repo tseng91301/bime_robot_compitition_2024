@@ -4,5 +4,8 @@ comm.connect()
 print("connected")
 
 while True:
-    print(comm.read_ult(0))
+    for i in range(0, 4):
+        val = comm.read_ult(i)
+        print(f"{val}", end=", ")
+    print()
     time.sleep(0.01)
