@@ -181,6 +181,8 @@ void setup() {
   Serial.begin(BAUDRATE);
   delay(100);
   check_connection();
+  
+  init_ults();
 
 /* Initialize the motor controller if used */
 #ifdef USE_BASE
