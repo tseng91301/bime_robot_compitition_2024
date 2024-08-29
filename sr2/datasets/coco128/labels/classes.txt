@@ -73,13 +73,13 @@ sink
 refrigerator
 book
 clock
-vase
-scissors
-teddy bear
-hair drier
-toothbrush
 rooster
 starling
 pink_chick
 yellow_chick
 goose
+vase
+scissors
+teddy bear
+hair drier
+toothbrush

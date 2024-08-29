@@ -30,9 +30,9 @@ def read_label_file(file_in):
 
 
 # search file named <name>_{number}.txt
-names = ['chickHealth_goose_frame']
+names = ['']
 
-change_from_to = [[0, 82], [1, 83], [2, 84]]
+change_from_to = [[75, 80], [80, 75], [76, 81], [81, 76], [77, 82], [82, 77], [78, 83], [83, 78], [79, 84], [84, 79]]
 
 file_names = list_files(path)
 

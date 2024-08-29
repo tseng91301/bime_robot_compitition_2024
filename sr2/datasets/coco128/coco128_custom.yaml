@@ -89,16 +89,16 @@ names:
   72: refrigerator
   73: book
   74: clock
-  75: vase
-  76: scissors
-  77: teddy bear
-  78: hair drier
-  79: toothbrush
-  80: rooster
-  81: starling
-  82: pink_chick
-  83: yellow_chick
-  84: goose
+  75: rooster
+  76: starling
+  77: pink_chick
+  78: yellow_chick
+  79: goose
+  80: vase
+  81: scissors
+  82: teddy bear
+  83: hair drier
+  84: toothbrush
 
 # Download script/URL (optional)
 download: https://github.com/ultralytics/assets/releases/download/v0.0.0/coco128.zip
