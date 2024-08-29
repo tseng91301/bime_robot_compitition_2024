@@ -96,6 +96,9 @@ names:
   79: toothbrush
   80: rooster
   81: starling
+  82: pink_chick
+  83: yellow_chick
+  84: goose
 
 # Download script/URL (optional)
 download: https://github.com/ultralytics/assets/releases/download/v0.0.0/coco128.zip

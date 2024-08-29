@@ -3,3 +3,4 @@ OpenBot/
 opencv/
 Starling_recognize/*.pt
 Starling_recognize/models/
+sr2/*.zip

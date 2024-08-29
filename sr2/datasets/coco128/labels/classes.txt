@@ -80,3 +80,6 @@ hair drier
 toothbrush
 rooster
 starling
+pink_chick
+yellow_chick
+goose

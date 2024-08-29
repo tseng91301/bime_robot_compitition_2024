@@ -1,7 +1,7 @@
 import os
 
 # label txt file path
-path = 'coco128/coco128/labels/train2017'
+path = 'datasets/coco128/labels/train2017'
 
 def list_files(directory):
     try:
@@ -30,9 +30,9 @@ def read_label_file(file_in):
 
 
 # search file named <name>_{number}.txt
-names = ['rooster', 'starling']
+names = ['chickHealth_goose_frame']
 
-change_from_to = [[2, 80], [3, 81]]
+change_from_to = [[0, 82], [1, 83], [2, 84]]
 
 file_names = list_files(path)
 
