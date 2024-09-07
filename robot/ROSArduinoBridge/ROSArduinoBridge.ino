@@ -54,6 +54,7 @@ const int ULTRASONIC_SENSOR_PINS[6][2] = { // This will be changed to [ULTRASONI
   {12, 13}
 };
 
+#include "stepper_motor.h"
 
 /* Variable initialization */
 
@@ -120,28 +121,22 @@ int runCommand() {
     break;
   case ULTRA_SONIC_VALUE:
     Serial.println(ultra_sonic_arr[arg1].get_val());
-    // Serial.println(" ");
-    // Serial.print(ultra_sonic_l2.get_val());
-    // Serial.print(" ");
-    // Serial.print(ultra_sonic_l3.get_val());
-    // Serial.print(" ");
-    // Serial.print(ultra_sonic_r1.get_val());
-    // Serial.print(" ");
-    // Serial.print(ultra_sonic_r2.get_val());
-    // Serial.print(" ");
-    // Serial.print(ultra_sonic_r3.get_val());
     break;
-  
-
-#ifdef USE_SERVOS
-  case SERVO_WRITE:
-    servos[arg1].setTargetPosition(arg2);
-    Serial.println("OK");
+  case STEP_WRITE:
+    if(arg1 < 0){
+      for(int i = 0; i >= arg1 * 2048 / 360; i --){
+      OneStep(true);
+      delay(2);
+      }
+    }
+    else{
+      for(int i = 0; i <= arg1 * 2048 / 360; i ++){
+      OneStep(false);
+      delay(2);
+      }
+    }
+    Serial.println(arg1);
     break;
-  case SERVO_READ:
-    Serial.println(servos[arg1].getServo().read());
-    break;
-#endif
     
 #ifdef USE_BASE
   case MOTOR_RAW_PWM:
@@ -179,6 +174,10 @@ void check_connection(){
 
 /* Setup function--runs once at startup. */
 void setup() {
+  pinMode(STEPPER_PIN_1, OUTPUT);
+  pinMode(STEPPER_PIN_2, OUTPUT);
+  pinMode(STEPPER_PIN_3, OUTPUT);
+  pinMode(STEPPER_PIN_4, OUTPUT);
   Serial.begin(BAUDRATE);
   delay(100);
   check_connection();
