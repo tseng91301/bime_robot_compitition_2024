@@ -4,3 +4,4 @@ opencv/
 Starling_recognize/*.pt
 Starling_recognize/models/
 sr2/*.zip
+sr3/*.zip
