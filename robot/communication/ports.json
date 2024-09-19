@@ -1,8 +1,8 @@
 {
     "motor": {
-        "port": "COM23"
+        "port": "ttyUSB0"
     },
     "ults": {
-        "port": "COM5"
+        "port": "ttyUSB1"
     }
 }
