@@ -54,3 +54,7 @@ def read_ult(dev_num: int):
     global ser_ults
     send(ser_ults, f"u {dev_num}")
     return float(wait_readln(ser_ults))
+
+
+
+

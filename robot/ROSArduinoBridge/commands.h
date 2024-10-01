@@ -10,7 +10,7 @@
 #define PIN_MODE       'c'
 #define DIGITAL_READ   'd'
 #define MOTOR_RAW_PWM  'o'
-#define STEP_WRITE     's'
+#define SCREEN         's'
 #define ULTRA_SONIC_VALUE 'u'
 #define DIGITAL_WRITE  'w'
 #define ANALOG_WRITE   'x'

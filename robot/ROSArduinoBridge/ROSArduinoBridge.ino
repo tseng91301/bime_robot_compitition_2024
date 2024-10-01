@@ -55,6 +55,9 @@ const int ULTRASONIC_SENSOR_PINS[ULTRASONIC_SENSOR_NUM][2] = { // This will be c
 };
 
 #include "stepper_motor.h"
+#include "i2cLcd.h"
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+LcdWords screen;
 
 /* Variable initialization */
 
@@ -122,20 +125,9 @@ int runCommand() {
   case ULTRA_SONIC_VALUE:
     Serial.println(ultra_sonic_arr[arg1].get_val());
     break;
-  case STEP_WRITE:
-    if(arg1 < 0){
-      for(int i = 0; i >= arg1 * 2048 / 360; i --){
-      OneStep(true);
-      delay(2);
-      }
-    }
-    else{
-      for(int i = 0; i <= arg1 * 2048 / 360; i ++){
-      OneStep(false);
-      delay(2);
-      }
-    }
-    Serial.println(arg1);
+  case SCREEN:
+    screen.set_words(0, argv1);
+    screen.set_words(1, argv2);
     break;
     
 #ifdef USE_BASE
@@ -184,6 +176,9 @@ void setup() {
   
   init_ults();
 
+  lcd.init();
+  lcd.backlight();
+
 /* Initialize the motor controller if used */
 #ifdef USE_BASE
   initMotorController();
@@ -204,8 +199,9 @@ void setup() {
 /* Enter the main loop.  Read and parse input from the serial port
    and run any valid commands. */
 void loop() {
+  screen.start_service();
+  screen.show(lcd);
   while (Serial.available() > 0) {
-    
     // Read the next character
     chr = Serial.read();
 
