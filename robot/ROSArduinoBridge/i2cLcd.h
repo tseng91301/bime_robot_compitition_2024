@@ -26,6 +26,7 @@ class LcdWords {
     private:
         String words[SCREEN_HEIGHT];
         String words_now_show[SCREEN_HEIGHT];
+        bool word_reset_clear = false;
         int position_x[SCREEN_HEIGHT];
         bool scroll[SCREEN_HEIGHT];
         int rollback_rate = 300;
@@ -54,6 +55,7 @@ class LcdWords {
             }else{
                 scroll[pos_y] = need_scroll;
             }
+            word_reset_clear = true;
         }
         void start_service() {
             for(int a=0;a<SCREEN_HEIGHT;a++){
@@ -75,6 +77,13 @@ class LcdWords {
             }
         }
         void show(LiquidCrystal_I2C &l) {
+            if(word_reset_clear) {
+                for(int a=0;a<SCREEN_HEIGHT; a++){
+                    l.setCursor(0, a);
+                    l.print("                ");
+                }
+                word_reset_clear = false;
+            }
             for(int a=0;a<SCREEN_HEIGHT; a++){
                 l.setCursor(0, a);
                 l.print(words_now_show[a].c_str());
