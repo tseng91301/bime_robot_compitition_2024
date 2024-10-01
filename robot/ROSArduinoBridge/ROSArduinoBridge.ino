@@ -44,8 +44,8 @@
 
 #include "ultrasonic_ckk.h"
 
-#define ULTRASONIC_SENSOR_NUM 4
-const int ULTRASONIC_SENSOR_PINS[6][2] = { // This will be changed to [ULTRASONIC_SENSOR_NUM][2] after complete building
+#define ULTRASONIC_SENSOR_NUM 6
+const int ULTRASONIC_SENSOR_PINS[ULTRASONIC_SENSOR_NUM][2] = { // This will be changed to [ULTRASONIC_SENSOR_NUM][2] after complete building
   {34, 35},
   {36, 37},
   {38, 39},
