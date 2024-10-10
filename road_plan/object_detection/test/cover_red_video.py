@@ -10,7 +10,7 @@ def show_lines(img, show_in_img = False):
     edges = cv2.Canny(gray, 50, 80, apertureSize=3)
 
     # 4. 使用 HoughLinesP 來偵測線條 (概率霍夫變換)
-    lines = cv2.HoughLinesP(edges, rho=1, theta=np.pi/180, threshold=10, minLineLength=100, maxLineGap=50)
+    lines = cv2.HoughLinesP(edges, rho=1, theta=np.pi/180, threshold=115, minLineLength=100, maxLineGap=30)
 
     if(show_in_img):
         # 5. 繪製偵測到的線條
@@ -29,9 +29,9 @@ def create_red_mask(image):
     high_h_1 = 27
     low_h_2 = 139
     high_h_2 = 180
-    low_s = 123
+    low_s = 100
     high_s = 255
-    low_v = 186
+    low_v = 118
     high_v = 255
 
     # 5. 定義紅色的範圍，根據滑桿的值調整
@@ -46,52 +46,6 @@ def create_red_mask(image):
     mask = mask_1 + mask_2
     return mask
 
-def calculate_max_diff(num_arr: dict, max_index):
-    l = len(num_arr)
-    add_sum = 0
-    for i in range(l):
-        if(i == max_index):
-            continue
-        add_sum += num_arr[i]
-    add_sum /= (l-1)
-    return num_arr[max_index] - add_sum
-
-def get_max_channel_index(img):
-    # 1. 拆分 RGB 通道
-    blue_channel, green_channel, red_channel = cv2.split(img)
-
-    # 2. 將三個通道堆疊成一個三維陣列
-    stacked_channels = np.stack([blue_channel, green_channel, red_channel], axis=-1)
-
-    # 3. 使用 np.argmax 來獲取每個像素的最大值所在的索引 (0=藍色, 1=綠色, 2=紅色)
-    max_channel_indices = np.argmax(stacked_channels, axis=-1)
-
-    return max_channel_indices
-
-def pure_red(img):
-    MIN_DIFF_VALUE = 60
-
-    # 1. 拆分 RGB 通道
-    blue_channel, green_channel, red_channel = cv2.split(img)
-    print("Image shape:", img.shape)
-
-    # 2. 對每個像素的紅色、綠色和藍色通道取最大值索引
-    max_index = get_max_channel_index(img)
-
-    # 3. 初始化 result_image，保持與 img 相同大小和類型
-    result_image = np.zeros(img.shape, dtype=np.uint8)
-
-    # 4. 將每個像素的最大通道設為 255，其他通道保持為 0
-    for i in range(img.shape[0]):  # 對每一行
-        for j in range(img.shape[1]):  # 對每一列
-            if(max_index[i, j] == 2 and calculate_max_diff(img[i, j], 2) >= MIN_DIFF_VALUE):
-                result_image[i, j, 2] = 255
-
-    print("Result image shape:", result_image.shape)
-
-    # 5. 直接返回 result_image 作為 OpenCV 圖片
-    return result_image
-
 video_path = "test3.mp4"
 
 # 1. 打開影片文件
@@ -103,8 +57,8 @@ if not cap.isOpened():
 VIDEO_ORIGINAL_VIDEO_NAME = "Original"
 VIDEO_PROCESSED_VIDEO_NAME = "Video Processed"
 
-VIDEO_OUT_SIZE_X = 300
-VIDEO_OUT_SIZE_Y = 450
+VIDEO_OUT_SIZE_X = 400
+VIDEO_OUT_SIZE_Y = 600
 
 cv2.namedWindow(VIDEO_ORIGINAL_VIDEO_NAME, cv2.WINDOW_NORMAL)
 cv2.resizeWindow(VIDEO_ORIGINAL_VIDEO_NAME, VIDEO_OUT_SIZE_X, VIDEO_OUT_SIZE_Y)

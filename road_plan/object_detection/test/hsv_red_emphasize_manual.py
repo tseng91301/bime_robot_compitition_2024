@@ -10,12 +10,12 @@ def highlight_red_with_trackbar(image):
 
     # 2. 創建滑桿來調整 HSV 範圍
     cv2.createTrackbar('Low H 1', 'Highlight Red', 0, 180, nothing)
-    cv2.createTrackbar('High H 1', 'Highlight Red', 10, 180, nothing)
-    cv2.createTrackbar('Low H 2', 'Highlight Red', 0, 180, nothing)
-    cv2.createTrackbar('High H 2', 'Highlight Red', 10, 180, nothing)
-    cv2.createTrackbar('Low S', 'Highlight Red', 120, 255, nothing)
+    cv2.createTrackbar('High H 1', 'Highlight Red', 27, 180, nothing)
+    cv2.createTrackbar('Low H 2', 'Highlight Red', 139, 180, nothing)
+    cv2.createTrackbar('High H 2', 'Highlight Red', 180, 180, nothing)
+    cv2.createTrackbar('Low S', 'Highlight Red', 100, 255, nothing)
     cv2.createTrackbar('High S', 'Highlight Red', 255, 255, nothing)
-    cv2.createTrackbar('Low V', 'Highlight Red', 70, 255, nothing)
+    cv2.createTrackbar('Low V', 'Highlight Red', 118, 255, nothing)
     cv2.createTrackbar('High V', 'Highlight Red', 255, 255, nothing)
 
     while True:
