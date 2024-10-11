@@ -14,6 +14,7 @@
 #define ULTRA_SONIC_VALUE 'u'
 #define DIGITAL_WRITE  'w'
 #define ANALOG_WRITE   'x'
+#define GOOSE          'g'
 #define LEFT            0
 #define RIGHT           1
 

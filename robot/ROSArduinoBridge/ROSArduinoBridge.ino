@@ -129,7 +129,25 @@ int runCommand() {
     screen.set_words(0, argv1);
     screen.set_words(1, argv2);
     break;
+  case GOOSE:
+    if(arg1 == 1){
+      analogWrite(13, 50);
+      analogWrite(12, 0);
+      delay(arg2);
+      analogWrite(13, 0);
+      analogWrite(12, 0);
+    }
+    else if(arg1 == 0){
+      analogWrite(12, 50);
+      analogWrite(13, 0);
+      delay(arg2);
+      analogWrite(12, 0);
+      analogWrite(13, 0);
+
+    }
     
+    break;
+
 #ifdef USE_BASE
   case MOTOR_RAW_PWM:
     /* Reset the auto stop timer */
@@ -166,10 +184,10 @@ void check_connection(){
 
 /* Setup function--runs once at startup. */
 void setup() {
-  pinMode(STEPPER_PIN_1, OUTPUT);
-  pinMode(STEPPER_PIN_2, OUTPUT);
-  pinMode(STEPPER_PIN_3, OUTPUT);
-  pinMode(STEPPER_PIN_4, OUTPUT);
+  pinMode(12, OUTPUT);
+  pinMode(13, OUTPUT);
+  digitalWrite(12, 0);
+  digitalWrite(13, 0);
   Serial.begin(BAUDRATE);
   delay(100);
   check_connection();
