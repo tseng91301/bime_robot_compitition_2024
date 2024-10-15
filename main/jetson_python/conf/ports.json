@@ -1,0 +1,8 @@
+{
+    "motor": {
+        "port": "ttyUSB0"
+    },
+    "ults": {
+        "port": "ttyUSB1"
+    }
+}

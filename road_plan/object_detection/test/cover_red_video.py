@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import time
+from line_road import detect
 
 def show_lines(img, show_in_img = False):
     # 2. 將圖像轉換為灰階

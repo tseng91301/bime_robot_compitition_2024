@@ -1,0 +1,23 @@
+{
+    "red_line": {
+        "low_h_1": 0,
+        "high_h_1": 27,
+        "low_h_2": 139,
+        "high_h_2": 180,
+        "low_s": 100,
+        "high_s": 255,
+        "low_v": 118,
+        "high_v": 255
+    },
+    "source_type": "video",
+    "camera": 0,
+    "video": "test3.mp4",
+    "resolution": {
+        "x": 400,
+        "y": 600
+    },
+    "preview": 0,
+    "preview_origin_name": "Original",
+    "preview_processed_name": "Video Processed",
+    "vertical_line_detect_range": 0.5
+}
