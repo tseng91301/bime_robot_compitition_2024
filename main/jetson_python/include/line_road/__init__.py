@@ -37,9 +37,16 @@ LINE_FOLLOWING_VERTICAL_DETECT_RANGE = int(line_config['vertical_line_detect_ran
 LINE_FOLLOWING_HORIZONTAL_DETECT_RANGE = int(line_config['horizontal_line_detect_range'] * VIDEO_OUT_SIZE_Y)
 LINE_FOLLOWING_HORIZONTAL_Y_BOTTOM = int(line_config['horizontal_line_detect_y_bottom'] * VIDEO_OUT_SIZE_Y)
 
+VERTICAL_LINE_POS_M = np.tan(np.deg2rad(90 - line_config['vertical_line_degree'])) # 垂直線的正向斜率最小值
+VERTICAL_LINE_NEG_M = np.tan(np.deg2rad(90 - line_config['vertical_line_degree'])) # 垂直線的負向斜率最大值
+HORIZONTAL_LINE_POS_M = np.tan(np.deg2rad(line_config['horizontal_line_degree'])) # 水平線的正向斜率最大值
+HORIZONTAL_LINE_NEG_M = np.tan(np.deg2rad(-line_config['horizontal_line_degree'])) # 水平線的負向斜率最小值
+HORIZONTAL_LINE = 0
+VERTICAL_LINE = 1
+
 VIDEO_OUT_PREVIEW = line_config['preview']
 
-def show_lines(img, show_in_img = False):
+def show_lines(img, line_type: int, show_in_img = False):
     # 2. 將圖像轉換為灰階
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
@@ -49,13 +56,45 @@ def show_lines(img, show_in_img = False):
     # 4. 使用 HoughLinesP 來偵測線條 (概率霍夫變換)
     lines = cv2.HoughLinesP(edges, rho=1, theta=np.pi/180, threshold=115, minLineLength=100, maxLineGap=30)
 
-    if(show_in_img):
-        # 5. 繪製偵測到的線條
+    # 篩選線段，依照參數為HORIZONTAL 或 VERTICAL決定
+    lines_filtered = []
+    if line_type == HORIZONTAL_LINE:
         if lines is not None:
             for line in lines:
                 x1, y1, x2, y2 = line[0]
+                # 避免垂直線 (斜率無法計算)
+                if x2 - x1 == 0:
+                    continue
+                slope = (y2 - y1) / (x2 - x1)
+                if HORIZONTAL_LINE_NEG_M <= slope <= HORIZONTAL_LINE_POS_M:
+                    lines_filtered.append(line)
+                    pass
+                pass
+            pass
+        pass
+    elif line_type == VERTICAL_LINE:
+        if lines is not None:
+            for line in lines:
+                x1, y1, x2, y2 = line[0]
+                # 避免垂直線 (斜率無法計算)
+                if x2 - x1 == 0:
+                    lines_filtered.append(line)
+                    continue
+                slope = (y2 - y1) / (x2 - x1)
+                if slope >= VERTICAL_LINE_POS_M or slope <= VERTICAL_LINE_NEG_M:
+                    lines_filtered.append(line)
+                    pass
+                pass
+            pass
+        pass
+
+    if(show_in_img):
+        # 5. 繪製偵測到的線條
+        if lines_filtered is not None:
+            for line in lines_filtered:
+                x1, y1, x2, y2 = line[0]
                 cv2.line(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
-    return lines
+    return lines_filtered
 
 def create_red_mask(image): # 產生一個遮罩，使照片只顯示紅色部分(數值可以在conf配置文件修改)
     # 3. 將圖像轉換為 HSV 色彩空間
@@ -90,22 +129,41 @@ def get_frame(): # 取得當前攝影機的影像
     frame = cv2.resize(frame, (VIDEO_OUT_SIZE_X, VIDEO_OUT_SIZE_Y))
     return frame
 
+no_horizontal_line_times = 0
+ANOTHER_HORIZONTAL_LINE_DETECT_INTERVAL = line_config['another_horizontal_line_detect_interval']
+MIN_VALID_HORIZONTAL_LINE_DETECT_INTERVAL = line_config['min_valid_horizontal_line_detect_times']
+horizontal_lines_detected = 0
+now_step = 1
+
 def load_frame(frame):
+    global horizontal_lines_detected
+    global no_horizontal_line_times
+    global now_step
     frame_center = int(VIDEO_OUT_SIZE_X/2)
     mask = create_red_mask(frame)
     frame_red_out = cv2.bitwise_and(frame, frame, mask=mask)
     detection_crop_vertical = frame_red_out[0:VIDEO_OUT_SIZE_Y-1, frame_center - LINE_FOLLOWING_VERTICAL_DETECT_RANGE:frame_center + LINE_FOLLOWING_VERTICAL_DETECT_RANGE]
     detection_crop_horizontal = frame_red_out[LINE_FOLLOWING_HORIZONTAL_Y_BOTTOM - LINE_FOLLOWING_HORIZONTAL_DETECT_RANGE: LINE_FOLLOWING_HORIZONTAL_Y_BOTTOM, 0:VIDEO_OUT_SIZE_X-1]
     if VIDEO_OUT_PREVIEW == 1:
-        lines_x = show_lines(detection_crop_vertical, True) # 儲存垂直的線條(在x軸分布)
-        lines_y = show_lines(detection_crop_horizontal, True) # 儲存水平的線條(在y軸分布)
+        lines_x = show_lines(detection_crop_vertical, VERTICAL_LINE, show_in_img=True) # 儲存垂直的線條(在x軸分布)
+        lines_y = show_lines(detection_crop_horizontal, HORIZONTAL_LINE, show_in_img=True) # 儲存水平的線條(在y軸分布)
         VIDEO_ORIGINAL_VIDEO_NAME = line_config['preview_origin_name']
         VIDEO_PROCESSED_VIDEO_NAME = line_config['preview_processed_name']
         cv2.imshow("Vertical", detection_crop_vertical)
         cv2.imshow("Horizontal", detection_crop_horizontal)
         cv2.imshow(VIDEO_PROCESSED_VIDEO_NAME, frame_red_out)
     else:
-        lines_x = show_lines(detection_crop_vertical, False) # 儲存垂直的線條(在x軸分布)
-        lines_y = show_lines(detection_crop_horizontal, False) # 儲存水平的線條(在y軸分布)
+        lines_x = show_lines(detection_crop_vertical, VERTICAL_LINE, show_in_img=False) # 儲存垂直的線條(在x軸分布)
+        lines_y = show_lines(detection_crop_horizontal, HORIZONTAL_LINE, show_in_img=False) # 儲存水平的線條(在y軸分布)
         pass
+    if len(lines_y) == 0:
+        no_horizontal_line_times += 1
+        if no_horizontal_line_times >= ANOTHER_HORIZONTAL_LINE_DETECT_INTERVAL:
+            horizontal_lines_detected = 0
+    else:
+        horizontal_lines_detected += 1
+        if no_horizontal_line_times >= ANOTHER_HORIZONTAL_LINE_DETECT_INTERVAL and horizontal_lines_detected >= MIN_VALID_HORIZONTAL_LINE_DETECT_INTERVAL:
+            no_horizontal_line_times = 0
+            now_step += 1
+
     return lines_x, lines_y
