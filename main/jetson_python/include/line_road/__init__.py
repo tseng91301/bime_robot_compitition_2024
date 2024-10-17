@@ -34,6 +34,8 @@ VIDEO_ORIGINAL_VIDEO_NAME = ""
 VIDEO_PROCESSED_VIDEO_NAME = ""
 
 LINE_FOLLOWING_VERTICAL_DETECT_RANGE = int(line_config['vertical_line_detect_range'] * VIDEO_OUT_SIZE_X / 2)
+LINE_FOLLOWING_HORIZONTAL_DETECT_RANGE = int(line_config['horizontal_line_detect_range'] * VIDEO_OUT_SIZE_Y)
+LINE_FOLLOWING_HORIZONTAL_Y_BOTTOM = int(line_config['horizontal_line_detect_y_bottom'] * VIDEO_OUT_SIZE_Y)
 
 VIDEO_OUT_PREVIEW = line_config['preview']
 
@@ -88,27 +90,22 @@ def get_frame(): # 取得當前攝影機的影像
     frame = cv2.resize(frame, (VIDEO_OUT_SIZE_X, VIDEO_OUT_SIZE_Y))
     return frame
 
-def load_frame(return_frame = False):
-    frame = get_frame()
-    try:
-        if type(frame) == int and frame == 0:
-            print("Video got ended or corrupted")
-            return None
-    except Exception as e:
-        print("Error occur when getting video: ", str(e))
-        return None
+def load_frame(frame):
+    frame_center = int(VIDEO_OUT_SIZE_X/2)
     mask = create_red_mask(frame)
     frame_red_out = cv2.bitwise_and(frame, frame, mask=mask)
+    detection_crop_vertical = frame_red_out[0:VIDEO_OUT_SIZE_Y-1, frame_center - LINE_FOLLOWING_VERTICAL_DETECT_RANGE:frame_center + LINE_FOLLOWING_VERTICAL_DETECT_RANGE]
+    detection_crop_horizontal = frame_red_out[LINE_FOLLOWING_HORIZONTAL_Y_BOTTOM - LINE_FOLLOWING_HORIZONTAL_DETECT_RANGE: LINE_FOLLOWING_HORIZONTAL_Y_BOTTOM, 0:VIDEO_OUT_SIZE_X-1]
     if VIDEO_OUT_PREVIEW == 1:
-        lines = show_lines(frame_red_out, True)
+        lines_x = show_lines(detection_crop_vertical, True) # 儲存垂直的線條(在x軸分布)
+        lines_y = show_lines(detection_crop_horizontal, True) # 儲存水平的線條(在y軸分布)
         VIDEO_ORIGINAL_VIDEO_NAME = line_config['preview_origin_name']
         VIDEO_PROCESSED_VIDEO_NAME = line_config['preview_processed_name']
-        cv2.imshow(VIDEO_ORIGINAL_VIDEO_NAME, frame)
+        cv2.imshow("Vertical", detection_crop_vertical)
+        cv2.imshow("Horizontal", detection_crop_horizontal)
         cv2.imshow(VIDEO_PROCESSED_VIDEO_NAME, frame_red_out)
     else:
-        lines = show_lines(frame_red_out, False)
+        lines_x = show_lines(detection_crop_vertical, False) # 儲存垂直的線條(在x軸分布)
+        lines_y = show_lines(detection_crop_horizontal, False) # 儲存水平的線條(在y軸分布)
         pass
-    if return_frame:
-        return lines, frame
-    else:
-        return lines
+    return lines_x, lines_y
