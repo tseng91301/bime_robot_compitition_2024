@@ -1,0 +1,5 @@
+pink_chicken
+yellow_chicken
+goose
+rooster
+starling
