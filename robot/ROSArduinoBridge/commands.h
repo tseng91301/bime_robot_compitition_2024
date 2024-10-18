@@ -7,7 +7,7 @@
 
 #define ANALOG_READ    'a'
 #define GET_BAUDRATE   'b'
-#define PIN_MODE       'c'
+#define CAMERA         'c'
 #define DIGITAL_READ   'd'
 #define MOTOR_RAW_PWM  'o'
 #define SCREEN         's'
@@ -15,6 +15,8 @@
 #define DIGITAL_WRITE  'w'
 #define ANALOG_WRITE   'x'
 #define GOOSE          'g'
+#define LASER          'r'
+#define LED            'l'
 #define LEFT            0
 #define RIGHT           1
 
