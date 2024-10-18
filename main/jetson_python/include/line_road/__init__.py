@@ -38,7 +38,7 @@ LINE_FOLLOWING_HORIZONTAL_DETECT_RANGE = int(line_config['horizontal_line_detect
 LINE_FOLLOWING_HORIZONTAL_Y_BOTTOM = int(line_config['horizontal_line_detect_y_bottom'] * VIDEO_OUT_SIZE_Y)
 
 VERTICAL_LINE_POS_M = np.tan(np.deg2rad(90 - line_config['vertical_line_degree'])) # 垂直線的正向斜率最小值
-VERTICAL_LINE_NEG_M = np.tan(np.deg2rad(90 - line_config['vertical_line_degree'])) # 垂直線的負向斜率最大值
+VERTICAL_LINE_NEG_M = np.tan(np.deg2rad(-90 + line_config['vertical_line_degree'])) # 垂直線的負向斜率最大值
 HORIZONTAL_LINE_POS_M = np.tan(np.deg2rad(line_config['horizontal_line_degree'])) # 水平線的正向斜率最大值
 HORIZONTAL_LINE_NEG_M = np.tan(np.deg2rad(-line_config['horizontal_line_degree'])) # 水平線的負向斜率最小值
 HORIZONTAL_LINE = 0
@@ -58,6 +58,7 @@ def show_lines(img, line_type: int, show_in_img = False):
 
     # 篩選線段，依照參數為HORIZONTAL 或 VERTICAL決定
     lines_filtered = []
+    lines_slope = []
     if line_type == HORIZONTAL_LINE:
         if lines is not None:
             for line in lines:
@@ -65,9 +66,10 @@ def show_lines(img, line_type: int, show_in_img = False):
                 # 避免垂直線 (斜率無法計算)
                 if x2 - x1 == 0:
                     continue
-                slope = (y2 - y1) / (x2 - x1)
+                slope = -(y2 - y1) / (x2 - x1)
                 if HORIZONTAL_LINE_NEG_M <= slope <= HORIZONTAL_LINE_POS_M:
                     lines_filtered.append(line)
+                    lines_slope.append(slope)
                     pass
                 pass
             pass
@@ -79,10 +81,12 @@ def show_lines(img, line_type: int, show_in_img = False):
                 # 避免垂直線 (斜率無法計算)
                 if x2 - x1 == 0:
                     lines_filtered.append(line)
+                    lines_slope.append(1000)
                     continue
-                slope = (y2 - y1) / (x2 - x1)
+                slope = -(y2 - y1) / (x2 - x1)
                 if slope >= VERTICAL_LINE_POS_M or slope <= VERTICAL_LINE_NEG_M:
                     lines_filtered.append(line)
+                    lines_slope.append(slope)
                     pass
                 pass
             pass
@@ -94,7 +98,7 @@ def show_lines(img, line_type: int, show_in_img = False):
             for line in lines_filtered:
                 x1, y1, x2, y2 = line[0]
                 cv2.line(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
-    return lines_filtered
+    return lines_filtered, lines_slope
 
 def create_red_mask(image): # 產生一個遮罩，使照片只顯示紅色部分(數值可以在conf配置文件修改)
     # 3. 將圖像轉換為 HSV 色彩空間
@@ -135,7 +139,7 @@ MIN_VALID_HORIZONTAL_LINE_DETECT_INTERVAL = line_config['min_valid_horizontal_li
 horizontal_lines_detected = 0
 now_step = 1
 
-def load_frame(frame):
+def load_frame(frame): # 載入輸入的影像，切分成多種顯示方式(辨識垂直線和辨識水平線)，並從其獲取各條線的起始點、終點及斜率
     global horizontal_lines_detected
     global no_horizontal_line_times
     global now_step
@@ -145,16 +149,16 @@ def load_frame(frame):
     detection_crop_vertical = frame_red_out[0:VIDEO_OUT_SIZE_Y-1, frame_center - LINE_FOLLOWING_VERTICAL_DETECT_RANGE:frame_center + LINE_FOLLOWING_VERTICAL_DETECT_RANGE]
     detection_crop_horizontal = frame_red_out[LINE_FOLLOWING_HORIZONTAL_Y_BOTTOM - LINE_FOLLOWING_HORIZONTAL_DETECT_RANGE: LINE_FOLLOWING_HORIZONTAL_Y_BOTTOM, 0:VIDEO_OUT_SIZE_X-1]
     if VIDEO_OUT_PREVIEW == 1:
-        lines_x = show_lines(detection_crop_vertical, VERTICAL_LINE, show_in_img=True) # 儲存垂直的線條(在x軸分布)
-        lines_y = show_lines(detection_crop_horizontal, HORIZONTAL_LINE, show_in_img=True) # 儲存水平的線條(在y軸分布)
+        lines_x, line_x_slope = show_lines(detection_crop_vertical, VERTICAL_LINE, show_in_img=True) # 儲存垂直的線條(在x軸分布)
+        lines_y, line_y_slope = show_lines(detection_crop_horizontal, HORIZONTAL_LINE, show_in_img=True) # 儲存水平的線條(在y軸分布)
         VIDEO_ORIGINAL_VIDEO_NAME = line_config['preview_origin_name']
         VIDEO_PROCESSED_VIDEO_NAME = line_config['preview_processed_name']
         cv2.imshow("Vertical", detection_crop_vertical)
         cv2.imshow("Horizontal", detection_crop_horizontal)
         cv2.imshow(VIDEO_PROCESSED_VIDEO_NAME, frame_red_out)
     else:
-        lines_x = show_lines(detection_crop_vertical, VERTICAL_LINE, show_in_img=False) # 儲存垂直的線條(在x軸分布)
-        lines_y = show_lines(detection_crop_horizontal, HORIZONTAL_LINE, show_in_img=False) # 儲存水平的線條(在y軸分布)
+        lines_x, line_x_slope = show_lines(detection_crop_vertical, VERTICAL_LINE, show_in_img=False) # 儲存垂直的線條(在x軸分布)
+        lines_y, line_y_slope = show_lines(detection_crop_horizontal, HORIZONTAL_LINE, show_in_img=False) # 儲存水平的線條(在y軸分布)
         pass
     if len(lines_y) == 0:
         no_horizontal_line_times += 1
@@ -166,4 +170,26 @@ def load_frame(frame):
             no_horizontal_line_times = 0
             now_step += 1
 
-    return lines_x, lines_y
+    return lines_x, lines_y, line_x_slope, line_y_slope
+
+def calculate_direction(lines_x, lines_x_slope): # 透過各個線段極其斜率判斷車子的行進方向 0: 直走, 愈左邊愈正，右邊相反
+    print(lines_x_slope)
+    if(len(lines_x_slope) == 0):
+        return 0
+    # left_line_index = 0
+    # left_line_val = lines_x[0]
+    # for i, v in enumerate(lines_x):
+    #     if v < left_line_val:
+    #         left_line_val = v
+    #         left_line_index = i
+    lines_x_deg = np.degrees(np.arctan(np.array(lines_x_slope)))
+    x_deg_min = np.min(lines_x_deg)
+    x_deg_max = np.max(lines_x_deg)
+    print(f"({x_deg_min}, {x_deg_max})")
+    if(x_deg_min < 0):
+        x_deg_min += 180
+    if(x_deg_max < 0):
+        x_deg_max += 180
+    
+    deg_avg = (x_deg_min + x_deg_max) / 2
+    return deg_avg
