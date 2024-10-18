@@ -1,7 +1,7 @@
 import os
 
-title = "chicken_starling_goose"
-dir = "images"
+title = "chicken_starling_goose_2"
+dir = "added/images"
 
 files = os.listdir(dir)
 now_num = 0
