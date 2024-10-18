@@ -1,4 +1,3 @@
-
 #define USE_BASE      // Enable the base controller code
 //#undef USE_BASE     // Disable the base controller code
 
@@ -8,8 +7,8 @@
    #define L298_MOTOR_DRIVER
 #endif
 
-//#define USE_SERVOS  // Enable use of PWM servos as defined in servos.h
-#undef USE_SERVOS     // Disable use of PWM servos
+#include <Servo.h>   //載入函式庫，這是內建的，不用安裝
+Servo myservo;  // 建立SERVO物件
 
 /* Serial port baud rate */
 #define BAUDRATE     115200
@@ -25,12 +24,6 @@
 
 /* Sensor functions */
 #include "sensors.h"
-
-/* Include servo support if required */
-#ifdef USE_SERVOS
-   #include <Servo.h>
-   #include "servos.h"
-#endif
 
 #ifdef USE_BASE
   /* Motor driver function definitions */
@@ -105,23 +98,6 @@ int runCommand() {
   case ANALOG_READ:
     Serial.println(analogRead(arg1));
     break;
-  case DIGITAL_READ:
-    Serial.println(digitalRead(arg1));
-    break;
-  case ANALOG_WRITE:
-    analogWrite(arg1, arg2);
-    Serial.println("OK");  
-    break;
-  case DIGITAL_WRITE:
-    if (arg2 == 0) digitalWrite(arg1, LOW);
-    else if (arg2 == 1) digitalWrite(arg1, HIGH);
-    Serial.println("OK"); 
-    break;
-  case PIN_MODE:
-    if (arg2 == 0) pinMode(arg1, INPUT);
-    else if (arg2 == 1) pinMode(arg1, OUTPUT);
-    Serial.println("OK");
-    break;
   case ULTRA_SONIC_VALUE:
     Serial.println(ultra_sonic_arr[arg1].get_val());
     break;
@@ -131,22 +107,54 @@ int runCommand() {
     break;
   case GOOSE:
     if(arg1 == 1){
-      analogWrite(13, 50);
-      analogWrite(12, 0);
+      analogWrite(2, 50);
+      analogWrite(3, 0);
       delay(arg2);
-      analogWrite(13, 0);
-      analogWrite(12, 0);
+      analogWrite(2, 0);
+      analogWrite(3, 0);
     }
     else if(arg1 == 0){
-      analogWrite(12, 50);
-      analogWrite(13, 0);
+      analogWrite(3, 50);
+      analogWrite(2, 0);
       delay(arg2);
-      analogWrite(12, 0);
-      analogWrite(13, 0);
-
+      analogWrite(2, 0);
+      analogWrite(3, 0);
     }
-    
     break;
+  case CAMERA:
+    myservo.write(0);  //旋轉到0度，就是一般所說的歸零
+    delay(1000);
+    myservo.write(arg1); //旋轉到90度
+    delay(1000);
+    break;
+  case LASER:
+    digitalWrite(31, 1);
+    delay(arg1);
+    digitalWrite(31, 0);
+    break; 
+  case LED:
+    if (strcmp(argv2, "r") == 0) {
+      digitalWrite(49, 1);
+      delay(atoi(argv2));  // 將字串轉爲整數
+      digitalWrite(49, 0);
+    } 
+    if (strcmp(argv1, "y") == 0) {
+      digitalWrite(51, 1);
+      delay(atoi(argv2));  // 將字串轉爲整數
+      digitalWrite(51, 0);
+    } 
+    else if (strcmp(argv1, "g") == 0) {
+      digitalWrite(52, 1);
+      delay(atoi(argv2));
+      digitalWrite(52, 0);
+    } 
+    else {
+      digitalWrite(49, 0);
+      digitalWrite(51, 0);
+      digitalWrite(52, 0);
+    }
+    break;
+   
 
 #ifdef USE_BASE
   case MOTOR_RAW_PWM:
@@ -184,10 +192,13 @@ void check_connection(){
 
 /* Setup function--runs once at startup. */
 void setup() {
-  pinMode(12, OUTPUT);
-  pinMode(13, OUTPUT);
-  digitalWrite(12, 0);
-  digitalWrite(13, 0);
+  myservo.attach(8);  // 設定要將伺服馬達接到哪一個PIN腳
+  pinMode(2, OUTPUT); // goose
+  pinMode(3, OUTPUT); // goose
+  pinMode(31, OUTPUT); // laser
+  pinMode(49, OUTPUT); // red
+  pinMode(51, OUTPUT); // yellow
+  pinMode(52, OUTPUT); // green
   Serial.begin(BAUDRATE);
   delay(100);
   check_connection();
