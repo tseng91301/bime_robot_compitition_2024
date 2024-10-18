@@ -1,5 +1,11 @@
 from include import communication as comm
+import threading
 import time
+import numpy as np
+
+frame = np.array()
+def detect_service():
+    
 
 comm.dump_ports_config()
 comm.connect()
