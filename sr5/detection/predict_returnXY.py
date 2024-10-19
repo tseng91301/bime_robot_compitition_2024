@@ -2,7 +2,7 @@ import cv2
 from ultralytics import YOLO
 
 # 加載模型
-model = YOLO(r"C:\Users\user\Desktop\datasets\best.pt")
+model = YOLO(r"C:\Users\user\Desktop\123456789\bime_robot_compitition_2024\sr5\best.pt")
 
 # 載入自定義資料集設定
 dataset_yaml = r"C:\Users\user\Desktop\datasets\datasets\coco128\coco128_custom.yaml"

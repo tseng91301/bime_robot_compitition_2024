@@ -8,7 +8,7 @@ model = YOLO(r"best.pt")
 dataset_yaml = r"coco128_custom.yaml"
 
 # 使用 OpenCV 打開攝像頭
-cap = cv2.VideoCapture(0)  # 0 代表第一個攝像頭
+cap = cv2.VideoCapture(1)  # 0 代表第一個攝像頭
 
 while True:
     # 讀取一幀影像
