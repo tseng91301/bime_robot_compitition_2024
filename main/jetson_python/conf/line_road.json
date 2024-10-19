@@ -11,7 +11,7 @@
     },
     "source_type": "video",
     "camera": 0,
-    "video": "VID_20241018_235001.mp4",
+    "video": "test_media/VID_20241019_092027.mp4",
     "resolution": {
         "x": 400,
         "y": 600
@@ -19,7 +19,7 @@
     "preview": 1,
     "preview_origin_name": "Original",
     "preview_processed_name": "Video Processed",
-    "vertical_line_detect_range": 0.5,
+    "vertical_line_detect_range": 0.7,
     "horizontal_line_detect_y_bottom": 0.7,
     "horizontal_line_detect_range": 0.3,
     "min_valid_horizontal_line_detect_times": 13,

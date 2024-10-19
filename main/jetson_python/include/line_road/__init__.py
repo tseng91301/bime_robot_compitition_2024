@@ -173,23 +173,23 @@ def load_frame(frame): # 載入輸入的影像，切分成多種顯示方式(辨
     return lines_x, lines_y, line_x_slope, line_y_slope
 
 def calculate_direction(lines_x, lines_x_slope): # 透過各個線段極其斜率判斷車子的行進方向 0: 直走, 愈左邊愈正，右邊相反
-    print(lines_x_slope)
     if(len(lines_x_slope) == 0):
-        return 0
-    # left_line_index = 0
-    # left_line_val = lines_x[0]
-    # for i, v in enumerate(lines_x):
-    #     if v < left_line_val:
-    #         left_line_val = v
-    #         left_line_index = i
+        return 0, 0
     lines_x_deg = np.degrees(np.arctan(np.array(lines_x_slope)))
     x_deg_min = np.min(lines_x_deg)
     x_deg_max = np.max(lines_x_deg)
-    print(f"({x_deg_min}, {x_deg_max})")
     if(x_deg_min < 0):
         x_deg_min += 180
     if(x_deg_max < 0):
         x_deg_max += 180
+
+    # 計算目前距離中心點的偏移
+    x_avg = 0
+    for v in lines_x:
+        x_avg += (v[0, 0] + v[0, 2])/2
+        pass
+    x_avg /= len(lines_x)
+    x_offset = x_avg - (VIDEO_OUT_SIZE_X / 2)
     
     deg_avg = (x_deg_min + x_deg_max) / 2
-    return deg_avg
+    return x_offset, deg_avg
