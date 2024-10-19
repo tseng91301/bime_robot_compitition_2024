@@ -28,14 +28,14 @@ elif source == "video":
         exit()
         pass
 
-VIDEO_OUT_SIZE_X = line_config['resolution']['x']
-VIDEO_OUT_SIZE_Y = line_config['resolution']['y']
+VIDEO_OUT_SIZE_X = line_config['resolution']['x'] # 要換算的 x 解析度
+VIDEO_OUT_SIZE_Y = line_config['resolution']['y'] # 要換算的 y 解析度
 VIDEO_ORIGINAL_VIDEO_NAME = ""
 VIDEO_PROCESSED_VIDEO_NAME = ""
 
-LINE_FOLLOWING_VERTICAL_DETECT_RANGE = int(line_config['vertical_line_detect_range'] * VIDEO_OUT_SIZE_X / 2)
-LINE_FOLLOWING_HORIZONTAL_DETECT_RANGE = int(line_config['horizontal_line_detect_range'] * VIDEO_OUT_SIZE_Y)
-LINE_FOLLOWING_HORIZONTAL_Y_BOTTOM = int(line_config['horizontal_line_detect_y_bottom'] * VIDEO_OUT_SIZE_Y)
+LINE_FOLLOWING_VERTICAL_DETECT_RANGE = int(line_config['vertical_line_detect_range'] * VIDEO_OUT_SIZE_X / 2) # 換算出來垂直線的辨識範圍 (從中間往兩邊擴張)
+LINE_FOLLOWING_HORIZONTAL_DETECT_RANGE = int(line_config['horizontal_line_detect_range'] * VIDEO_OUT_SIZE_Y) # 換算出來水平線的辨識範圍
+LINE_FOLLOWING_HORIZONTAL_Y_BOTTOM = int(line_config['horizontal_line_detect_y_bottom'] * VIDEO_OUT_SIZE_Y) # 換算出來水平線辨識的起始 y 座標
 
 VERTICAL_LINE_POS_M = np.tan(np.deg2rad(90 - line_config['vertical_line_degree'])) # 垂直線的正向斜率最小值
 VERTICAL_LINE_NEG_M = np.tan(np.deg2rad(-90 + line_config['vertical_line_degree'])) # 垂直線的負向斜率最大值
@@ -133,16 +133,17 @@ def get_frame(): # 取得當前攝影機的影像
     frame = cv2.resize(frame, (VIDEO_OUT_SIZE_X, VIDEO_OUT_SIZE_Y))
     return frame
 
-no_horizontal_line_times = 0
+no_horizontal_line_times = 0 # 目前沒有偵測到的橫線次數
 ANOTHER_HORIZONTAL_LINE_DETECT_INTERVAL = line_config['another_horizontal_line_detect_interval']
 MIN_VALID_HORIZONTAL_LINE_DETECT_INTERVAL = line_config['min_valid_horizontal_line_detect_times']
-horizontal_lines_detected = 0
-now_step = 1
+horizontal_lines_detected = 0 # 目前偵測到橫線的次數
+now_step = 1 # 目前進行的關卡
 
 def load_frame(frame): # 載入輸入的影像，切分成多種顯示方式(辨識垂直線和辨識水平線)，並從其獲取各條線的起始點、終點及斜率
     global horizontal_lines_detected
     global no_horizontal_line_times
     global now_step
+    
     frame_center = int(VIDEO_OUT_SIZE_X/2)
     mask = create_red_mask(frame)
     frame_red_out = cv2.bitwise_and(frame, frame, mask=mask)
