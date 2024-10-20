@@ -9,7 +9,7 @@
         "low_v": 118,
         "high_v": 255
     },
-    "source_type": "video",
+    "source_type": "camera",
     "camera": 0,
     "video": "test_media/VID_20241019_092027.mp4",
     "resolution": {

@@ -7,8 +7,8 @@
 2. line_road.json: 紀錄關於路徑規劃(影像辨識賽道)的影像辨識相關參數
 
 ## 二、設定 configuration 文件
-* 相關設定範例都呈現在標準配置文件內
-line_road.json: 
+#### 相關設定範例都呈現在標準配置文件內
+*line_road.json:*
 * red_line:
     以下8個數值分別代表可以被算做紅線的範圍(以hsv色域來定義)，h 從0 到 180、s 和 v 都是 0 到 255
 * source_type: 要使用哪一種影像資料媒介，支援影片(video)、存取攝影機(camera)
@@ -22,3 +22,9 @@ line_road.json:
 * another_horizontal_line_detect_interval: 在辨識是否到下一關時，最小需要經過沒有橫線的次數(避免在不停辨識到橫線時突然有一張沒有，接著如果又有橫線關卡又再 +1)
 * vertical_line_degree: 辨識垂直線的角度範圍(Deg)(向左或向右個幾度)
 * horizontal_line_degree: 辨識水平線的角度範圍(Deg)(向上或向下幾度)
+
+*goose_weight.json:*
+* color_range: 以下數值陣列是記錄各種顏色的讀取範圍 [H, S, V]
+* detect_range: 紀錄偵測範圍的x, y起始點以及長寬範圍
+* preview: 紀錄是否產生一個預覽視窗
+* preview_window_name: 紀錄預覽視窗的名字

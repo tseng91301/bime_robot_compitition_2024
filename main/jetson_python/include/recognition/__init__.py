@@ -44,8 +44,7 @@ def get_frame(): # 取得當前攝影機的影像
         return 0
     return frame
 
-def detect():
-    frame = get_frame()
+def detect(frame):
     # 将 OpenCV 图像传递给 YOLOv8 模型
     results = model(frame)
 
