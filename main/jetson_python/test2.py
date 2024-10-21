@@ -1,4 +1,4 @@
-from include import goose_weight, recognition, line_road
+from include import goose_weight, recognition
 import cv2
 
 while True:
