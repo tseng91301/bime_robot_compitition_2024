@@ -3,6 +3,7 @@
         "port": "ttyUSB0"
     },
     "ults": {
-        "port": "ttyUSB1"
+        "port": "ttyUSB1",
+        "ult_num": 6
     }
 }
