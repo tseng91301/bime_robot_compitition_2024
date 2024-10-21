@@ -24,7 +24,7 @@ ults_value = [100] * ULT_NUM
 def dump_ports_config():
     print(json.dumps(ports_config))
 
-def poweron_init(ser):
+def poweron_init(ser: serial.Serial):
     while True:
         if ser.in_waiting > 0:
             recv_byte = ord(ser.read())
@@ -43,6 +43,7 @@ def connect():
     except Exception as e:
         m_p = ports_config['motor']['port']
         print(f"Warning: Cannot connect to ser_motor ({m_p}), {str(e)}")
+        pass
     try:
         ser_ults = serial.Serial(ports_config['ults']['port'], 115200)
         poweron_init(ser_ults)
@@ -51,7 +52,7 @@ def connect():
         u_p = ports_config['ults']['port']
         print(f"Warning: Cannot connect to ser_motor ({u_p}), {str(e)}")
 
-def send(ser: serial.Serial, inp_str):
+def send(ser: serial.Serial, inp_str: str):
     inp_str += "\r"
     ser.write(bytes(inp_str.encode('utf-8')))
     return
@@ -69,7 +70,6 @@ def read_ult(dev_num: int):
 
 # 讀取每一個 Ultrasonic 訊號並放到陣列中
 def read_all_ult():
-    print("Try reading all ultrasonic source...")
     global ults_value
     while True:
         if ser_ults_connected != 1:
@@ -82,8 +82,10 @@ def read_all_ult():
     pass
 
 # 開啟一個獨立用於讀取 Ultrasonic 訊號的線程
-read_all_ult_service = threading.Thread(target=read_all_ult, args=('Read ults service',))
+read_all_ult_service = threading.Thread(target=read_all_ult, args=())
+read_all_ult_service.start()
 
-
-
-
+# 使雙馬達轉動的程式
+def motor_turn_raw(spdL: int, spdR: int):
+    send(ser_motor, f"o {spdL} {spdR}")
+    return
