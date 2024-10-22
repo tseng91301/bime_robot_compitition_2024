@@ -17,6 +17,13 @@ sudo docker commit dakuo dakuo_new
 
 3. 執行新的容器並映射 /dev/video0 和 /dev/video1：
 sudo docker run -it --rm --device=/dev/video0:/dev/video0 --device=/dev/video1:/dev/video1 dakuo_new
+sudo docker run -it --device=/dev/video0:/dev/video0 --device=/dev/video1:/dev/video1 dakuo_new
+sudo docker run -it -d --name dakuo \
+ --device=/dev/video0:/dev/video0 --device=/dev/video1:/dev/video1 \
+ --device=/dev/arduino_motor:/dev/arduino_motor \
+ --device=/dev/arduino_ultrasonic:/dev/arduino_ultrasonic \
+dakuo_new
+
 
 4. 進入新的容器後，可以檢查 /dev/video0 和 /dev/video1 是否存在：
 ls /dev/video*
