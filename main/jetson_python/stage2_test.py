@@ -2,7 +2,9 @@ from include import goose_weight, recognition, communication
 import cv2
 
 while True:
+    print(123)
     frame = recognition.get_frame()
+    print(456)
     item = recognition.detect(frame)
     print(f"item: {item}")
 

@@ -21,7 +21,7 @@ while True:
 
     if len(item[3]) > 0:
         print("rooster")
-        communication.send(communication.ser_ults,"")
+        communication.send(communication.ser_ults,"l g 10")
         communication.send(communication.ser_ults,"")
     
     if len(item[4]) > 0:
