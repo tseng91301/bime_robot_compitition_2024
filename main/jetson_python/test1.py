@@ -1,41 +1,41 @@
-from include import line_road
+from include import goose_weight, recognition, communication
 import cv2
-import numpy as np
-# from include import recognition
-
-log = ""
-now_step = 0 # 紀錄目前做到第幾關
-
-line_following_switch = 1 # 尋線開關
-
-def end():
-    # 程式結束時會做的事情
-    open("logs/workflow.log", "w").write(log)
-    return
 
 while True:
-    frame = line_road.get_frame()
-    try:
-        if frame == 0:
-            end()
-            break
-    except:
-        pass
+    frame = recognition.get_frame()
+    item = recognition.detect(frame)
+    print(f"item: {item}")
 
-    if line_following_switch:
-        lines_x, lines_y, lines_x_slope, lines_y_slope = line_road.load_frame(frame) # 從目前的影像獲取以上資訊
-        x_offset, direction = line_road.calculate_direction(lines_x, lines_x_slope) # 計算目前的方向和 x 軸位移
-        log += f"Direction: {direction}\n"
-        log += f"x_offset: {x_offset}\n"
+    # 檢查 item[0] 是否有偵測到物體
+    if len(item[0]) > 0:
+        #print(item[0])
 
-        # 從 line_road 程式中獲取 now_step 並計算差異
-        if now_step != line_road.now_step:
-            now_step = line_road.now_step
-            log += "Now step changed to: " + str(now_step) + "\n"
+        # 取得中心點的 x 和 y
+        center_x = item[0][0][4]
+        center_y = item[0][0][5]
+        print("Center x:", center_x)
+        print("Center y:", center_y)
 
-        pass
-    log += "\n"
-    # print(recognition.detect())
+        # 在中心點畫一個圓圈 (使用紅色 BGR)
+        cv2.circle(frame, (center_x, center_y), 10, (0, 0, 255), -1)  # 圓圈半徑 10，紅色 (BGR: 0, 0, 255)
+
+        if 400<center_x<600 :
+            print("goal")
+            
+
+
+        # 或者使用 drawMarker 畫出標記
+        # cv2.drawMarker(frame, (center_x, center_y), (0, 255, 0), markerType=cv2.MARKER_CROSS, markerSize=20, thickness=2)
+
+    else:
+        print("No objects detected for class 0.")
+
+    # 顯示帶有標記的偵測影像
+    cv2.imshow('Detection Window', frame)
+
+    # 停止條件：按 'q' 鍵退出
     if cv2.waitKey(33) & 0xFF == ord('q'):
-        end()
         break
+
+# 釋放資源，關閉所有視窗
+cv2.destroyAllWindows()
