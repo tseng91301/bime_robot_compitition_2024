@@ -70,6 +70,7 @@ def read_ult(dev_num: int):
 
 # 讀取每一個 Ultrasonic 訊號並放到陣列中
 def read_all_ult():
+    print("Start reading ultrasonic sensor")
     global ults_value
     while True:
         if ser_ults_connected != 1:
@@ -79,11 +80,13 @@ def read_all_ult():
                 ults_value[i] = read_ult(i)
             except Exception as e:
                 print(f"Read ults error: {str(e)}")
+        time.sleep(0.1)
     pass
 
-# 開啟一個獨立用於讀取 Ultrasonic 訊號的線程
-read_all_ult_service = threading.Thread(target=read_all_ult, args=())
-read_all_ult_service.start()
+def start_ult_service():
+    # 開啟一個獨立用於讀取 Ultrasonic 訊號的線程
+    read_all_ult_service = threading.Thread(target=read_all_ult, args=())
+    read_all_ult_service.start()
 
 # 使雙馬達轉動的程式
 def motor_turn_raw(spdL: int, spdR: int):
