@@ -4,3 +4,4 @@ opencv/
 Starling_recognize/*.pt
 Starling_recognize/models/
 sr*/*.zip
+main/jetson_python/include/*/__pycache__
