@@ -16,7 +16,7 @@ sudo docker stop dakuo
 sudo docker commit dakuo dakuo_new
 
 3. 執行新的容器並映射 /dev/video0 和 /dev/video1 以及兩個Arduino 板：
-sudo docker run -it -d --name dakuo \
+sudo docker run -it --runtime=nvidia --gpus all --ipc=host -d --name dakuo \
  --device=/dev/video0:/dev/video0 --device=/dev/video1:/dev/video1 \
  --device=/dev/arduino_motor:/dev/arduino_motor \
  --device=/dev/arduino_ultrasonic:/dev/arduino_ultrasonic \

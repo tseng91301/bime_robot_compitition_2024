@@ -52,7 +52,7 @@ def detect(frame):
 
     for result in results:
         # 遍历每个检测的物体
-        for box in result.boxes.data.numpy():
+        for box in result.boxes.data.cpu().numpy():
 
             x1, y1, x2, y2, score, class_id = box
             # 转换为整数 (适合绘制)
