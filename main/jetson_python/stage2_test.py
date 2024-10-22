@@ -1,8 +1,6 @@
 from include import goose_weight, recognition, communication
 import cv2
 
-communication.start_ult_service()
-
 while True:
     print(123)
     frame = recognition.get_frame()
