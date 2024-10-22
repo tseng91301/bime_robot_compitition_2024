@@ -1,0 +1,22 @@
+要同時映射 /dev/video0 和 /dev/video1 到你的 dakuo 容器中，你可以按照以下步驟進行：
+
+1. 確認 dakuo 容器正在執行
+sudo docker ps -a
+
+如果 dakuo 容器沒有執行，你需要啟動它。如果容器已停止，可以用以下命令啟動它：
+sudo docker start dakuo
+
+
+2. 如之前所述，Docker 目前不允許在執行中的容器上動態添加設備。你需要建立一個新的映像，從 dakuo 容器建立：
+
+(a)停止容器（如果正在執行）
+sudo docker stop dakuo
+
+(b)建立一個新的映像，從 dakuo 容器建立
+sudo docker commit dakuo dakuo_new
+
+3. 執行新的容器並映射 /dev/video0 和 /dev/video1：
+sudo docker run -it --rm --device=/dev/video0:/dev/video0 --device=/dev/video1:/dev/video1 dakuo_new
+
+4. 進入新的容器後，可以檢查 /dev/video0 和 /dev/video1 是否存在：
+ls /dev/video*
