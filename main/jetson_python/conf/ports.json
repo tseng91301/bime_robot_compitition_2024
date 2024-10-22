@@ -1,9 +1,9 @@
 {
     "motor": {
-        "port": "ttyUSB0"
+        "port": "/dev/arduino_motor"
     },
     "ults": {
-        "port": "ttyUSB1",
+        "port": "/dev/arduino_ultrasonic",
         "ult_num": 6
     }
 }
