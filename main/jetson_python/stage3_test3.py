@@ -21,13 +21,14 @@ while True:
 
     if len(item[3]) > 0:
         print("rooster")
-        communication.send(communication.ser_ults,"l g 10")
+        communication.send(communication.ser_ults,"l g 1000")
         communication.send(communication.ser_ults,"")
     
     if len(item[4]) > 0:
         print("starling")
-        communication.send(communication.ser_ults,"")
-        communication.send(communication.ser_ults,"")
+        communication.send(communication.ser_ults,"l r 3000")
+        communication.send(communication.ser_ults,"r 3000")
+        communication.send(communication.ser_ults,"m ")
 
     # 停止條件
     if cv2.waitKey(33) & 0xFF == ord('q'):
