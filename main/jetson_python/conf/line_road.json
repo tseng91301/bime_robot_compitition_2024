@@ -9,8 +9,8 @@
         "low_v": 118,
         "high_v": 255
     },
-    "source_type": "video",
-    "camera": 0,
+    "source_type": "camera",
+    "camera": 1,
     "video": "test_media/test3.mp4",
     "resolution": {
         "x": 400,
