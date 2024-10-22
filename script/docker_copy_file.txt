@@ -9,7 +9,7 @@ docker ps
 
 使用 docker cp 命令
 假設容器名稱為 mycontainer，你可以使用以下命令將檔案 myfile.txt 複製到容器中的指定目錄 /path/in/container：
-docker cp myfile.txt mycontainer:/path/in/container
+docker cp myfile.txt dakuo:/root/jetson_python
 
 
 例子：
