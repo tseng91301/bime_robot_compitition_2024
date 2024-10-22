@@ -15,9 +15,7 @@ sudo docker stop dakuo
 (b)建立一個新的映像，從 dakuo 容器建立
 sudo docker commit dakuo dakuo_new
 
-3. 執行新的容器並映射 /dev/video0 和 /dev/video1：
-sudo docker run -it --rm --device=/dev/video0:/dev/video0 --device=/dev/video1:/dev/video1 dakuo_new
-sudo docker run -it --device=/dev/video0:/dev/video0 --device=/dev/video1:/dev/video1 dakuo_new
+3. 執行新的容器並映射 /dev/video0 和 /dev/video1 以及兩個Arduino 板：
 sudo docker run -it -d --name dakuo \
  --device=/dev/video0:/dev/video0 --device=/dev/video1:/dev/video1 \
  --device=/dev/arduino_motor:/dev/arduino_motor \
