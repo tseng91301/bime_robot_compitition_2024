@@ -3,6 +3,7 @@ import threading
 import time
 import json
 import os
+import numpy as np
 
 # package_dir = os.path.dirname(__file__)
 # ports_config_path = os.path.join(package_dir, "ports.json")
@@ -20,6 +21,10 @@ ser_motor_connected = 0
 
 ULT_NUM = ports_config["ults"]["ult_num"]
 ults_value = [100] * ULT_NUM
+
+LSPD = ports_config["motor"]["calibration"]["lspd"]
+RSPD = ports_config["motor"]["calibration"]["rspd"]
+MAX_SPEED = ports_config["motor"]["max_speed"]
 
 def dump_ports_config():
     print(json.dumps(ports_config))
@@ -91,4 +96,19 @@ def start_ult_service():
 # 使雙馬達轉動的程式
 def motor_turn_raw(spdL: int, spdR: int):
     send(ser_motor, f"o {spdL} {spdR}")
+    return
+
+def motor_turn_deg(spd: float, deg: float):
+    if deg <= 90: # 要往右邊
+        spdL, spdR = 1, np.sin(np.radians(deg))
+        pass
+    else:
+        spdL, spdR = np.sin(np.radians(deg)), 1
+    spdL *= spd * MAX_SPEED
+    spdR *= spd * MAX_SPEED
+    motor_turn_raw(int(spdL), int(spdR))
+    return
+
+def motor_stop():
+    motor_turn_raw(0, 0)
     return
