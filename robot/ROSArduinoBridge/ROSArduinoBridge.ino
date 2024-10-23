@@ -133,7 +133,7 @@ int runCommand() {
     digitalWrite(31, 0);
     break; 
   case LED:
-    if (strcmp(argv2, "r") == 0) {
+    if (strcmp(argv1, "r") == 0) {
       digitalWrite(49, 1);
       delay(atoi(argv2));  // 將字串轉爲整數
       digitalWrite(49, 0);
