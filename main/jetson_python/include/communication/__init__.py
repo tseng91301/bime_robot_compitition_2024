@@ -104,8 +104,8 @@ def motor_turn_deg(spd: float, deg: float):
         pass
     else:
         spdL, spdR = np.sin(np.radians(deg)), 1
-    spdL *= spd * MAX_SPEED
-    spdR *= spd * MAX_SPEED
+    spdL *= spd * MAX_SPEED * LSPD
+    spdR *= spd * MAX_SPEED * RSPD
     motor_turn_raw(int(spdL), int(spdR))
     return
 
