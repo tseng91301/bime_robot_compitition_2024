@@ -112,3 +112,8 @@ def motor_turn_deg(spd: float, deg: float):
 def motor_stop():
     motor_turn_raw(0, 0)
     return
+
+def motor_back():
+    motor_stop()
+    time.sleep(0.5)
+    motor_turn_raw(int(1 * MAX_SPEED * LSPD), int(1 * MAX_SPEED * RSPD))
