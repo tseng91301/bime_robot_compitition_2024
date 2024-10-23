@@ -1,0 +1,28 @@
+{
+    "goose_weight_to_box_color": {
+        "light": 1,
+        "medium": 2,
+        "heavy": 3
+    },
+    "sick_chicken_location": {
+        "yellow_chick": {
+            "position": 4,
+            "box_color": "yellow"
+        },
+        "pink_chick": {
+            "position": 1,
+            "box_color": "pink"
+        },
+        "yellow_chick_position_grid": {
+            "one": 1,
+            "two": 2,
+            "three": 3,
+            "four": 4,
+            "five": 5
+        }
+    },
+    "parrot_location": {
+        "mother_hen": 3,
+        "parrot": 2
+    }
+}
