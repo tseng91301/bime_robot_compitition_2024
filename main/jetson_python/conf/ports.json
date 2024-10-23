@@ -9,6 +9,9 @@
     },
     "ults": {
         "port": "/dev/arduino_ultrasonic",
-        "ult_num": 6
+        "ult_num": 6,
+        "weight_sensor": {
+            "CalibrationValue": 6.66
+        }
     }
 }
