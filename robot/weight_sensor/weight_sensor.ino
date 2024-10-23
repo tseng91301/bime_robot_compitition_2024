@@ -24,8 +24,8 @@
 #endif
 
 //pins:
-const int HX711_dout = 2; //mcu > HX711 dout pin
-const int HX711_sck = 3; //mcu > HX711 sck pin
+const int HX711_dout = 44; //mcu > HX711 dout pin
+const int HX711_sck = 45; //mcu > HX711 sck pin
 
 //HX711 constructor:
 HX711_ADC LoadCell(HX711_dout, HX711_sck);
@@ -34,7 +34,7 @@ const int calVal_eepromAdress = 0;
 unsigned long t = 0;
 
 void setup() {
-  Serial.begin(57600); delay(10);
+  Serial.begin(115200); delay(10);
   Serial.println();
   Serial.println("Starting...");
 
@@ -78,7 +78,8 @@ void loop() {
     char inByte = Serial.read();
     if (inByte == 't') LoadCell.tareNoDelay(); //tare
     else if (inByte == 'r') calibrate(); //calibrate
-    else if (inByte == 'c') changeSavedCalFactor(); //edit calibration value manually
+    else if (inByte == 'c') 
+    (); //edit calibration value manually
   }
 
   // check if last tare operation is complete

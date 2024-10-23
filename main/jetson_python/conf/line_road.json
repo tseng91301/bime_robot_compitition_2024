@@ -6,12 +6,12 @@
         "high_h_2": 180,
         "low_s": 100,
         "high_s": 255,
-        "low_v": 118,
+        "low_v": 50,
         "high_v": 255
     },
-    "source_type": "camera",
+    "source_type": "video",
     "camera": 1,
-    "video": "test_media/test3.mp4",
+    "video": "test_media/front_output2.mp4",
     "resolution": {
         "x": 400,
         "y": 600
@@ -25,5 +25,6 @@
     "min_valid_horizontal_line_detect_times": 13,
     "another_horizontal_line_detect_interval": 50,
     "vertical_line_degree": 35,
-    "horizontal_line_degree": 25
+    "horizontal_line_degree": 25,
+    "x_offset_calibrate": 65
 }
