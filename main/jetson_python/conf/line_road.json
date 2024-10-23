@@ -25,5 +25,6 @@
     "min_valid_horizontal_line_detect_times": 13,
     "another_horizontal_line_detect_interval": 50,
     "vertical_line_degree": 35,
-    "horizontal_line_degree": 25
+    "horizontal_line_degree": 25,
+    "x_offset_calibrate": 65
 }

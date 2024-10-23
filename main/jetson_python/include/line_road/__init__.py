@@ -44,6 +44,8 @@ HORIZONTAL_LINE_NEG_M = np.tan(np.deg2rad(-line_config['horizontal_line_degree']
 HORIZONTAL_LINE = 0
 VERTICAL_LINE = 1
 
+X_OFFSET_CALIBRATE = line_config["x_offset_calibrate"]
+
 VIDEO_OUT_PREVIEW = line_config['preview']
 
 def show_lines(img, line_type: int, show_in_img = False):
@@ -190,7 +192,7 @@ def calculate_direction(lines_x, lines_x_slope): # 透過各個線段極其斜�
         x_avg += (v[0, 0] + v[0, 2])/2
         pass
     x_avg /= len(lines_x)
-    x_offset = x_avg - (VIDEO_OUT_SIZE_X / 2)
+    x_offset = x_avg - (VIDEO_OUT_SIZE_X / 2) + X_OFFSET_CALIBRATE
     
     deg_avg = (x_deg_min + x_deg_max) / 2
     return x_offset, deg_avg
