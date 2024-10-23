@@ -13,7 +13,7 @@ with open(line_config_path, 'r') as f:
 source = line_config['source_type']
 if source == "camera":
     camera_id = int(line_config[source])
-    cap = cv2.VideoCapture(camera_id)
+    cap = cv2.VideoCapture(camera_id, cv2.CAP_V4L2)
     if not cap.isOpened():
         print("Can't access the camera: {camera_id}")
         exit()
