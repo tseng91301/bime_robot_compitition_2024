@@ -1,9 +1,9 @@
 from include import goose_weight, communication
 import time
-from conf import stage_parameters
+
 communication.connect()
 
-communication.send(communication.ser_motor, "c 110")) # lower the camera to see chicken
+communication.send(communication.ser_motor, "c 110") # lower the camera to see chicken
 
 # first stage
 box = 0 #1 2 3
