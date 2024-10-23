@@ -116,4 +116,4 @@ def motor_stop():
 def motor_back():
     motor_stop()
     time.sleep(0.5)
-    motor_turn_raw(int(1 * MAX_SPEED * LSPD), int(1 * MAX_SPEED * RSPD))
+    motor_turn_raw(int(-1 * MAX_SPEED * LSPD), int(-1 * MAX_SPEED * RSPD))

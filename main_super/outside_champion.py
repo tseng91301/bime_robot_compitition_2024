@@ -1,33 +1,38 @@
 import time
 from include import communication
 
+SAFE_DISTANCE_FRONT = 50  # 前方感測器認為安全的距離（單位：公分）
+BACK_DURATION = 0.5  # 後退持續時間
+
 def process_sensor_data():
     # 取得六顆超音波感測器的數據
     ult_left_front = communication.ults_value[0]    # 左前方
-    ult_right_front = communication.ults_value[3]   # 右前方
-    ult_left_side = communication.ults_value[2]     # 左側
-    ult_right_side = communication.ults_value[5]    # 右側
     ult_front_left = communication.ults_value[1]    # 正前方左
+    ult_left_rear = communication.ults_value[2]     # 左後方
+    ult_right_front = communication.ults_value[3]   # 右前方
     ult_front_right = communication.ults_value[4]   # 正前方右
+    ult_right_rear = communication.ults_value[5]    # 右後方
 
+    # 計算前方的距離（平均左右正前方的數值）
+    avg_front_distance = (ult_front_left + ult_front_right) / 2
 
-    # 判斷前方的障礙物
-    front_obstacle = (ult_front_left < 30 or ult_front_right < 30)
-
-    # 根據左右兩側距離決定行進方向
-    if front_obstacle:
-        # 如果前方有障礙物，後退或轉向
-        communication.motor_back()  # 可以修改這裡的邏輯，例如轉向
-        time.sleep(0.5)
-    elif ult_left_side < ult_right_side:
-        # 左邊距離太近，向右轉
-        communication.motor_turn_deg(0.5, 120)  # 半速向右轉
-    elif ult_right_side < ult_left_side:
-        # 右邊距離太近，向左轉
-        communication.motor_turn_deg(0.5, 60)  # 半速向左轉
+    if avg_front_distance < SAFE_DISTANCE_FRONT:
+        # 前方有障礙物，後退並向後移動
+        print("Front obstacle detected, backing up...")
+        communication.motor_back()  # 後退
+        time.sleep(BACK_DURATION)
     else:
-        # 兩側距離相當，向前直行
-        communication.motor_turn_raw(100, 100)  # 全速直行
+        # 沒有前方障礙物，選擇左右側較遠的方向
+        print("No front obstacle, checking sides...")
+        avg_left_distance = (ult_left_front) / 2  # 左側距離
+        avg_right_distance = (ult_right_front) / 2  # 右側距離
+
+        if avg_left_distance > avg_right_distance:
+            print("Left side is clearer, moving left...")
+            communication.motor_turn_deg(0.6, 35)  # 向左轉
+        else:
+            print("Right side is clearer, moving right...")
+            communication.motor_turn_deg(0.6, 165)  # 向右轉
 
 def main():
     # 初始化與連接
