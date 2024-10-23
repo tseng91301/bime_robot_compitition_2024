@@ -5,7 +5,7 @@
             "lspd": 0.9,
             "rspd": 1
         },
-        "max_speed": 185
+        "max_speed": 130
     },
     "ults": {
         "port": "/dev/arduino_ultrasonic",
