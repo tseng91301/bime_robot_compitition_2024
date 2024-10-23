@@ -16,7 +16,7 @@ with open(detection_config_path, 'r') as f:
 source = detection_config['source_type']
 if source == "camera":
     camera_id = int(detection_config[source])
-    cap = cv2.VideoCapture(camera_id, cv2.CAP_V4L2)
+    cap = cv2.VideoCapture(camera_id)
     if not cap.isOpened():
         print(f"Can't access the camera: {camera_id}")
         exit()
