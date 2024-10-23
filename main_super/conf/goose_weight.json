@@ -1,0 +1,28 @@
+{
+    "color_range": {
+        "blue": {
+            "lower": [103, 0, 0],
+            "upper": [125, 255, 255]
+        },
+        "red1": {
+            "lower": [0, 150, 142],
+            "upper": [17, 220, 255]
+        },
+        "red2": {
+            "lower": [163, 150, 142],
+            "upper": [180, 220, 255]
+        },
+        "green": {
+            "lower": [59, 0, 0],
+            "upper": [86, 255, 255]
+        }
+    },
+    "detect_range": {
+        "x_start": 0.3,
+        "width": 0.4,
+        "y_start": 0.3,
+        "height": 0.3 
+    },
+    "preview": 1,
+    "preview_window_name": "Goose Weight Color Block preview"
+}
