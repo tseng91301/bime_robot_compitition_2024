@@ -6,7 +6,7 @@
         "high_h_2": 180,
         "low_s": 100,
         "high_s": 255,
-        "low_v": 118,
+        "low_v": 50,
         "high_v": 255
     },
     "source_type": "camera",

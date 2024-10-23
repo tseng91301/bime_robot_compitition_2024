@@ -1,6 +1,11 @@
 {
     "motor": {
-        "port": "/dev/arduino_motor"
+        "port": "/dev/arduino_motor",
+        "calibration": {
+            "lspd": 0.9,
+            "rspd": 1
+        },
+        "max_speed": 185
     },
     "ults": {
         "port": "/dev/arduino_ultrasonic",
