@@ -1,6 +1,6 @@
 {
     "source_type": "camera",
-    "camera": 0,
+    "camera": 1,
     "video": "test3.mp4",
     "model_path": "model_data/best.pt"
 }
