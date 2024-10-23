@@ -19,7 +19,7 @@ def highlight_red_with_trackbar():
     cv2.createTrackbar('High V', 'Highlight Red', 255, 255, nothing)
 
     # 3. 打開攝像頭（0 表示預設攝像頭）
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(1, cv2.CAP_DSHOW)  # Windows 上的 DirectShow
 
     if not cap.isOpened():
         print("無法打開攝像頭")
