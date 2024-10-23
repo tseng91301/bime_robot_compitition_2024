@@ -10,6 +10,7 @@ def process_sensor_data():
     ult_front_left = communication.ults_value[1]    # 正前方左
     ult_front_right = communication.ults_value[4]   # 正前方右
 
+
     # 判斷前方的障礙物
     front_obstacle = (ult_front_left < 30 or ult_front_right < 30)
 
@@ -33,12 +34,17 @@ def main():
     communication.connect()
     communication.start_ult_service()
     
-    # 持續進行超音波感測器回饋與馬達控制
-    while True:
-        if communication.ser_ults_connected and communication.ser_motor_connected:
-            # 根據感測器的數據進行處理
-            process_sensor_data()
-        time.sleep(0.1)  # 稍微延遲以避免過度處理
+    try:
+        # 持續進行超音波感測器回饋與馬達控制
+        while True:
+            if communication.ser_ults_connected and communication.ser_motor_connected:
+                # 根據感測器的數據進行處理
+                process_sensor_data()
+            time.sleep(0.1)  # 稍微延遲以避免過度處理
+    except KeyboardInterrupt:
+        # 捕捉 Ctrl+C 並停止馬達
+        print("Program interrupted. Stopping motors...")
+        communication.motor_stop()  # 停止馬達
 
 if __name__ == "__main__":
     main()
