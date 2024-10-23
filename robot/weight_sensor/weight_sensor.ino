@@ -78,7 +78,8 @@ void loop() {
     char inByte = Serial.read();
     if (inByte == 't') LoadCell.tareNoDelay(); //tare
     else if (inByte == 'r') calibrate(); //calibrate
-    else if (inByte == 'c') changeSavedCalFactor(); //edit calibration value manually
+    else if (inByte == 'c') 
+    (); //edit calibration value manually
   }
 
   // check if last tare operation is complete

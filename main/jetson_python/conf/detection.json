@@ -1,6 +1,7 @@
 {
-    "source_type": "camera",
+    "source_type": "video",
     "camera": 0,
-    "video": "test3.mp4",
-    "model_path": "model_data/best.pt"
+    "video": "test_media/output3.mp4",
+    "model_path": "model_data/best.pt",
+    "items": ["pink_chicken", "yellow_chicken", "goose", "rooster", "starling"]
 }

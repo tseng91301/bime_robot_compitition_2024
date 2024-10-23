@@ -9,9 +9,9 @@
         "low_v": 50,
         "high_v": 255
     },
-    "source_type": "camera",
+    "source_type": "video",
     "camera": 1,
-    "video": "test_media/test3.mp4",
+    "video": "test_media/front_output2.mp4",
     "resolution": {
         "x": 400,
         "y": 600
