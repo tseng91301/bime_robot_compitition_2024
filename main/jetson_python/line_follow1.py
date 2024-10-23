@@ -50,6 +50,7 @@ LF_service = threading.Thread(target=line_follow_service, args=())
 LF_service.start()
 
 # 關於第二關的參數
+stage_2_first = True
 stage_2_detect = True # 是否需要辨識小雞
 stage_2_chicken_detect_times = 0 # 目前辨識到幾次小雞
 stage_2_pink_chicken_detect_times = 0 # 目前辨識到幾次pink小雞
@@ -57,6 +58,9 @@ stage_2_yellow_chicken_detect_times = 0 # 目前辨識到幾次yellow小雞
 try:
     while True:
         if line_road.now_step == 2 and stage_2_detect:
+            if stage_2_first:
+                communication.send(communication.ser_motor, "c 110")
+                stage_2_first = False
             # 獲取 detection 鏡頭畫面並裁減
             frame = recognition.get_frame()
             frame_cut2 = frame[300:480, 240:400]
@@ -80,7 +84,7 @@ try:
                     print("Detected pink chicken")
                 time.sleep(3)
                 start_line_follow = True
-                
+
         # 按 'q' 鍵退出
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
