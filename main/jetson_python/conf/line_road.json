@@ -10,7 +10,7 @@
         "high_v": 255
     },
     "source_type": "camera",
-    "camera": 1,
+    "camera": 0,
     "video": "test_media/front_output2.mp4",
     "resolution": {
         "x": 400,
