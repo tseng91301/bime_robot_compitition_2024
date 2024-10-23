@@ -22,7 +22,7 @@
     "vertical_line_detect_range": 0.7,
     "horizontal_line_detect_y_bottom": 0.7,
     "horizontal_line_detect_range": 0.3,
-    "min_valid_horizontal_line_detect_times": 13,
+    "min_valid_horizontal_line_detect_times": 11,
     "another_horizontal_line_detect_interval": 50,
     "vertical_line_degree": 35,
     "horizontal_line_degree": 25,
