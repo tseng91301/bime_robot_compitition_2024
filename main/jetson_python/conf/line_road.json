@@ -9,14 +9,14 @@
         "low_v": 50,
         "high_v": 255
     },
-    "source_type": "video",
+    "source_type": "camera",
     "camera": 1,
     "video": "test_media/front_output2.mp4",
     "resolution": {
         "x": 400,
         "y": 600
     },
-    "preview": 1,
+    "preview": 0,
     "preview_origin_name": "Original",
     "preview_processed_name": "Video Processed",
     "vertical_line_detect_range": 0.7,
